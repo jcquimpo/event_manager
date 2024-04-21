@@ -60,7 +60,20 @@ def test_user_update_partial(user_update_data):
     partial_data = {"email": user_update_data["email"]}
     user_update = UserUpdate(**partial_data)
     assert user_update.email == partial_data["email"]
+    
+# Valid email format Test
+def test_user_base_email_valid(user_base_data):
+    user_base_data["email"] = "valid.email@example.com"
+    user = UserBase(**user_base_data)
+    assert user.email == "valid.email@example.com"
 
+# Invalid email format Test
+@pytest.mark.parametrize("email", ["invalid.email@", "invalid.email.com", "noatsymbol.com"])
+def test_user_base_email_invalid(email, user_base_data):
+    user_base_data["email"] = email
+    with pytest.raises(ValidationError):
+        UserBase(**user_base_data)  
+    
 # Tests for UserResponse
 def test_user_response_datetime(user_response_data):
     user = UserResponse(**user_response_data)
