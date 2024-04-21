@@ -86,3 +86,9 @@ def test_user_base_username_invalid(username, user_base_data):
     user_base_data["username"] = username
     with pytest.raises(ValidationError):
         UserBase(**user_base_data)
+
+# Test for short usernames - shorter than 3 chars
+def test_user_base_username_short(user_base_data):
+    user_base_data["username"] = "yy"
+    with pytest.raises(ValidationError):
+        UserBase(**user_base_data)
